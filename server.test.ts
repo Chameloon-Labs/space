@@ -21,11 +21,12 @@ const b64 = (b: ArrayBuffer) => btoa(String.fromCharCode(...new Uint8Array(b)));
 async function phone() {
   const keys = await crypto.subtle.generateKey({ name: "ECDSA", namedCurve: "P-256" }, true, ["sign", "verify"]);
   const key = b64(await crypto.subtle.exportKey("raw", keys.publicKey)); // X9.63, as CryptoKit's x963Representation
+  let last = 0;
   return {
     key,
     async request(method: string, path: string, opts: { body?: object; invite?: string; time?: number; sign?: string } = {}) {
       const body = opts.body ? new TextEncoder().encode(JSON.stringify(opts.body)) : new Uint8Array();
-      const time = String(opts.time ?? Date.now());
+      const time = String(opts.time ?? (last = Math.max(Date.now(), last + 1))); // never the same text twice
       const data = new TextEncoder().encode(await canonical(method, path, time, body));
       const sig = opts.sign ?? b64(await crypto.subtle.sign({ name: "ECDSA", hash: "SHA-256" }, keys.privateKey, data));
       const headers: Record<string, string> = { "x-chameloon-key": key, "x-chameloon-time": time, "x-chameloon-signature": sig, "x-chameloon-device": "phone-1" };

@@ -17,7 +17,9 @@ export type Device = { key: string; device?: string; added: string; note?: strin
 export type AuthFile = { token?: string; invites?: Invite[]; devices?: Device[] };
 
 const SKEW = 5 * 60 * 1000; // how far a phone's clock may be off
-const seen = new Map<string, number>(); // signatures used in the last minutes: a replay is refused
+// signed requests (key + what was signed) used in the last minutes: a replay is refused. Not the signature itself:
+// an ECDSA signature has a second valid form (s → n − s), so a copied request could come back with the other one.
+const seen = new Map<string, number>();
 
 export const authFile = (dir: string) => join(dir, "auth.json");
 export const readAuth = (dir: string): AuthFile => (existsSync(authFile(dir)) ? JSON.parse(readFileSync(authFile(dir), "utf8")) : {});
@@ -54,17 +56,19 @@ export async function checkAccess(dir: string, mode: AuthMode | undefined, req: 
   const sig = req.headers.get("x-chameloon-signature") ?? "";
   if (!key || !time || !sig) return { ok: false, status: 401, error: "This space needs a signed request from the Chameloon app." };
   if (!(Math.abs(Date.now() - Number(time)) < SKEW)) return { ok: false, status: 401, error: "The phone's clock is off by more than 5 minutes." };
-  if (seen.has(sig)) return { ok: false, status: 401, error: "This request was already used." };
+  let signed: string;
   try {
     const pub = await crypto.subtle.importKey("raw", b64(key), { name: "ECDSA", namedCurve: "P-256" }, false, ["verify"]);
     const url = new URL(req.url);
-    const data = new TextEncoder().encode(await canonical(req.method, url.pathname + url.search, time, body));
-    if (!(await crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, pub, b64(sig), data))) throw new Error();
+    signed = await canonical(req.method, url.pathname + url.search, time, body);
+    if (!(await crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, pub, b64(sig), new TextEncoder().encode(signed)))) throw new Error();
   } catch {
     return { ok: false, status: 401, error: "The signature doesn't match." };
   }
+  const once = hex(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(`${key}\n${signed}`)));
+  if (seen.has(once)) return { ok: false, status: 401, error: "This request was already used." };
   const now = Date.now();
-  seen.set(sig, now);
+  seen.set(once, now);
   for (const [s, t] of seen) if (now - t > 2 * SKEW) seen.delete(s);
 
   if ((auth.devices ?? []).some((d) => d.key === key)) return { ok: true };
