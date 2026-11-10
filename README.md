@@ -1,4 +1,9 @@
-# @chameloon-labs/space
+<a href="https://chameloon.com/docs/"><img src="https://raw.githubusercontent.com/Chameloon-Labs/space/main/.github/readme/banner.png" width="100%" alt="space, by chameloon labs (@chameloon-labs/space). Build and host Chameloon spaces: the format, a checker and a server, in TypeScript. The pixel chameleon stands on a cloud, thinking." /></a>
+
+<p align="center">
+  <a href="https://chameloon.com/docs/"><img src="https://raw.githubusercontent.com/Chameloon-Labs/space/main/.github/readme/button-docs.png" height="52" alt="Read the docs" /></a>
+  <a href="https://chameloon.com/docs/quick-start/"><img src="https://raw.githubusercontent.com/Chameloon-Labs/space/main/.github/readme/button-quick-start.png" height="52" alt="Quick start" /></a>
+</p>
 
 Everything to build and host Chameloon spaces, in TypeScript/JavaScript:
 
@@ -94,3 +99,6 @@ Or `https://chameloon.com/space.schema.json`. Check your spaces with `bunx chame
   `stack` (axis vertical/horizontal/z), `text`, `metric`, `icon` (SF Symbol), `image` (PNG/JPEG), `gauge`, `progress`
   (0–1), `chart` (its own `query` returning label, value, series), `date` (ticking timers), `button` (opens a page), `spacer`,
   `divider`. Sizes left out show the card. The [Showcase space](https://chameloon.com/spaces/showcase/) uses every node.
+
+<br />
+<img src="https://raw.githubusercontent.com/Chameloon-Labs/space/main/.github/readme/footer.png" width="100%" alt="The pixel chameleon walks on the grass above the earth. chameloon labs. MIT license, © 2026 Chameloon Labs" />
