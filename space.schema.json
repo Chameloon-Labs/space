@@ -1,0 +1,381 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 60
+    },
+    "version": {
+      "type": "integer",
+      "minimum": -9007199254740991,
+      "maximum": 9007199254740991
+    },
+    "minApp": {
+      "type": "string",
+      "pattern": "^\\d+(\\.\\d+){0,2}$"
+    },
+    "changes": {
+      "type": "string",
+      "maxLength": 200
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 140
+    },
+    "icon": {
+      "type": "string"
+    },
+    "tint": {
+      "type": "string",
+      "pattern": "^#[0-9a-fA-F]{6}$"
+    },
+    "immersive": {
+      "default": false,
+      "type": "boolean"
+    },
+    "permissions": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "camera",
+          "photos",
+          "files",
+          "location",
+          "notifications"
+        ]
+      }
+    },
+    "schema": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "pages": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "ui": {
+                "type": "string"
+              },
+              "scroll": {
+                "default": "top",
+                "type": "string",
+                "enum": [
+                  "top",
+                  "bottom"
+                ]
+              }
+            },
+            "required": [
+              "ui"
+            ]
+          }
+        ]
+      }
+    },
+    "sync": {
+      "type": "object",
+      "properties": {
+        "tables": {
+          "default": [],
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+          }
+        },
+        "every": {
+          "type": "number",
+          "minimum": 5
+        }
+      }
+    },
+    "card": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string"
+        },
+        "motd": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "stats": {
+          "maxItems": 4,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "maxLength": 20
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "label",
+              "value"
+            ]
+          }
+        },
+        "chart": {
+          "type": "string"
+        }
+      }
+    },
+    "auth": {
+      "default": "open",
+      "type": "string",
+      "enum": [
+        "open",
+        "token",
+        "device"
+      ]
+    },
+    "theme": {
+      "type": "object",
+      "properties": {
+        "preset": {
+          "default": "glow",
+          "type": "string",
+          "enum": [
+            "glow",
+            "paper",
+            "playful",
+            "bold",
+            "terminal",
+            "minimal"
+          ]
+        },
+        "font": {
+          "type": "string",
+          "enum": [
+            "system",
+            "serif",
+            "rounded",
+            "mono"
+          ]
+        },
+        "radius": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 32
+        },
+        "appearance": {
+          "default": "auto",
+          "type": "string",
+          "enum": [
+            "auto",
+            "light",
+            "dark"
+          ]
+        },
+        "background": {
+          "type": "string",
+          "pattern": "^\\/[^/]"
+        }
+      }
+    },
+    "widget": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string"
+        },
+        "background": {
+          "type": "string"
+        },
+        "scheme": {
+          "type": "string",
+          "enum": [
+            "dark",
+            "light"
+          ]
+        },
+        "navigate": {
+          "type": "string"
+        },
+        "small": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema0"
+          }
+        },
+        "medium": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema0"
+          }
+        },
+        "large": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema0"
+          }
+        },
+        "circular": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema0"
+          }
+        },
+        "rectangular": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema0"
+          }
+        },
+        "inline": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema0"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "name",
+    "version",
+    "pages"
+  ],
+  "$defs": {
+    "__schema0": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "stack",
+            "text",
+            "metric",
+            "icon",
+            "image",
+            "gauge",
+            "progress",
+            "chart",
+            "date",
+            "button",
+            "spacer",
+            "divider"
+          ]
+        },
+        "text": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "badge": {
+          "type": "string"
+        },
+        "style": {
+          "type": "string"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "tint": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "navigate": {
+          "type": "string"
+        },
+        "value": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "min": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "max": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "date": {
+          "type": "string"
+        },
+        "query": {
+          "type": "string"
+        },
+        "axis": {
+          "type": "string",
+          "enum": [
+            "vertical",
+            "horizontal",
+            "z"
+          ]
+        },
+        "align": {
+          "type": "string"
+        },
+        "spacing": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "padding": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "radius": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "background": {
+          "type": "string"
+        },
+        "height": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema0"
+          }
+        }
+      },
+      "required": [
+        "type"
+      ]
+    }
+  }
+}

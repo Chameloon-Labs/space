@@ -1,0 +1,55 @@
+{
+  "name": "@chameloon-labs/space",
+  "version": "0.1.0",
+  "description": "Chameloon spaces: the space.json format (types, zod schema, JSON Schema), page tool types, and a server to self-host spaces.",
+  "keywords": [
+    "chameloon",
+    "space",
+    "iphone",
+    "mini-apps",
+    "self-hosted",
+    "sqlite",
+    "sync"
+  ],
+  "homepage": "https://chameloon.com/docs/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chameloon-Labs/space.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Chameloon-Labs/space/issues"
+  },
+  "license": "MIT",
+  "author": "Chameloon Labs",
+  "dependencies": {
+    "zod": "^4.0.0"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./server": "./src/server.ts",
+    "./space.schema.json": "./space.schema.json"
+  },
+  "type": "module",
+  "types": "src/index.ts",
+  "bin": {
+    "chameloon-serve": "bin/serve.ts",
+    "chameloon-check": "check.ts"
+  },
+  "files": [
+    "Dockerfile",
+    "LICENSE",
+    "README.md",
+    "bin",
+    "check.ts",
+    "space.schema.json",
+    "src"
+  ],
+  "devDependencies": {
+    "@types/bun": "^1.4.4"
+  },
+  "scripts": {
+    "build": "bun build.ts",
+    "serve": "bun bin/serve.ts",
+    "test": "bun test"
+  }
+}
