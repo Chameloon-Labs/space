@@ -1,6 +1,6 @@
 {
   "name": "@chameloon-labs/space",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Chameloon spaces: the space.json format (types, zod schema, JSON Schema), page tool types, and a server to self-host spaces.",
   "keywords": [
     "chameloon",

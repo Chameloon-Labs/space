@@ -179,7 +179,7 @@ export function createHandler(root: string, token?: string) {
     if (req.method === "POST" && route === "hook") {
       let payload: unknown = null;
       try { payload = json(); } catch {}
-      if (!payload || typeof payload !== "object") return new Response("hook needs a JSON object", { status: 400 });
+      if (!payload || typeof payload !== "object" || Array.isArray(payload)) return new Response("hook needs a JSON object", { status: 400 });
       const answer = s.hook(payload as Record<string, unknown>, req.headers);
       return answer === null ? new Response("this space has no hook", { status: 404 }) : Response.json(answer);
     }
